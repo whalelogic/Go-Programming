@@ -2,6 +2,8 @@
 
 This repository demonstrates core **data structures** and **algorithms** implemented in **Go (Golang)** — with a focus on performance, clarity, and idiomatic code.
 
+>Note: Each directory contains a README.md which provides a basic walkthrough, helpful tips, as well as easy to understand implementations of the types, interfaces, functions and methods commonly used in the Go stdlib.
+
 ---
 
 ## 📚 Contents
