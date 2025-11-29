@@ -1,5 +1,9 @@
 # Go Slices: A Deep Dive
 
+> Slice package contains a main.go file with examples of using slices in Go.
+
+Run the code in `main.go` to see examples in action.
+
 This guide provides a comprehensive look at slices in Go. Slices are one of the most powerful and versatile features of Go, and a solid understanding of them is crucial for any Go developer.
 
 ## 1. What is a Slice?
