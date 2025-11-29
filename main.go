@@ -37,14 +37,14 @@ func main() {
 			// Header: Accept = */*
 		}
 		fmt.Fprintf(w, "\n")
-		fmt.Fprintf(w, "Echo: %s", message)
+		fmt.Fprintf(w, "Echo: %s\n", message)
 		// Response body example:
 		// If you visit: http://localhost:8080/echo?message=Hello,%20World!
 		// Echo: Hello, World!
 	})
 
 	// Start the HTTP server
-	fmt.Println("\n\n\t 🖧Server listening localhost:8080\n\n --> GET or Ping /greet or /echo \n\n --> Using HTTP/1.1 Protocol")
+	fmt.Println(" 🖧Server listening localhost:8080")
 	http.ListenAndServe(":8080", nil)
 
 
