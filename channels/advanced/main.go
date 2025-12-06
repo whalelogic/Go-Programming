@@ -33,7 +33,7 @@ func main() {
 		c2 <- "two"
 	}()
 
-	for i := 0; i < 2; i++ {
+	for range 2 {
 		select {
 		case msg1 := <-c1:
 			fmt.Println("received", msg1)
@@ -60,7 +60,7 @@ func main() {
 		}
 	}()
 
-	for j := 1; j <= 3; j++ {
+	for j := 1; j <= 5; j++ {
 		jobs <- j
 		fmt.Println("sent job", j)
 	}

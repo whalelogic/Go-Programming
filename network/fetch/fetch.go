@@ -1,3 +1,4 @@
+// Package fetch fetches the content of a url and prints it to the console
 package fetch 
 
 import (
@@ -11,6 +12,13 @@ import (
 
 func main() {
 
+	// check if there are command line arguments
+	if len(os.Args) < 2 {
+		log.Print("Must enter at least one url")
+		os.Exit(1)
+	}
+
+	// iterate over command line arguments
 	for _, url := range os.Args[1:] {
 		if url == "" {
 			log.Print("Must enter a url")

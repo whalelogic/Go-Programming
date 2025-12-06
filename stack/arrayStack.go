@@ -1,9 +1,9 @@
+// Package stack implements a stack (data structure) using a linked list.
 package stack
 
 import (
 	"fmt"
 )
-
 
 type Node struct {
 	data int 
@@ -47,8 +47,7 @@ func (s *Stack) Peek() (bool) {
 }
 
 
-// function to print the stack 
-
+// Print - prints the stack from top to bottom 
 func (s *Stack) Print() {
 	current := s.top 
 	fmt.Println("Stack top -> bottom: ")

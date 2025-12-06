@@ -2,50 +2,61 @@ package main
 
 import (
 	"fmt"
-	"net/http"
-	"time"
 
+	"github.com/whalelogic/Go-Programming/stack"
 	"github.com/whalelogic/Go-Programming/utils"
 )
 
 
 
 func main() {
+
+	var s = "hello"
+	fmt.Println(string(s[0]), string(s[1]), string(s[2]), string(s[3]), string(s[4]))
+	fmt.Println(byte(s[0]))
 	
 	// Using the Swap function from the utils package
 	x, y := utils.Swap("hello", 42)
 	fmt.Println(x, y) 
 
-	http.HandleFunc("/greet", func(w http.ResponseWriter, r *http.Request) {
-		h := r.Proto
-		fmt.Fprintf(w, "Hello Protocol %s! Time is: %s\n", h, time.Now())
-		// Response body: Hello Protocol HTTP/1.1! Time is: 2025-11-18 09:51:44.370398375 -0500 EST m=+30.972438668
-	})
+	// Use the ParseURL function
+	var URL = "https://www.example.com/path?query=123"
+	parsed, err := utils.ParseURL(URL)
+	if err != nil {
+		fmt.Println("Error parsing URL:", err)
+	} else {
+		fmt.Println("\nSuccessfully parsed URL: \t", parsed)
+	}
 
-	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
-		message := r.URL.Query().Get("message")
-		if message == "" {
-			message = "No message provided"
-		}
-		headers := r.Header
-		for name, values := range headers {
-			for _, value := range values {
-				fmt.Fprintf(w, "Header: %s = %s\n", name, value)
-			}
-			// Response body example:
-			// Header: User-Agent = curl/7.68.0
-			// Header: Accept = */*
-		}
-		fmt.Fprintf(w, "\n")
-		fmt.Fprintf(w, "Echo: %s\n", message)
-		// Response body example:
-		// If you visit: http://localhost:8080/echo?message=Hello,%20World!
-		// Echo: Hello, World!
-	})
+	// Create a stack 
+	type Node struct {
+	data int 
+	next *Node
+	}
 
-	// Start the HTTP server
-	fmt.Println(" 🖧Server listening localhost:8080")
-	http.ListenAndServe(":8080", nil)
+	type Stack struct {
+	top *Node
+	length int
+	}
+
+	arr := stack.Stack{}
+	arr.Push(10)
+	arr.Push(20)
+	arr.Push(30)
+	arr.Push(40)
+	arr.Print()
+	arr.Peek()
+	arr.Pop()
+	arr.Print()
+	arr.Peek()
+
+	fmt.Println(arr)
+
+
+
+
+
+
 
 
 }

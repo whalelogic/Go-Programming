@@ -18,7 +18,7 @@ func main() {
 	ch := make(chan string)
 
 	// The message to send.
-	s := "📮MESSAGE: from channel 📠) "
+	s := "📮MESSAGE: from channel: Hello, Channel!"
 	// Call the function to send the message to the channel.
 	SendChanMsg(s, ch)
 
