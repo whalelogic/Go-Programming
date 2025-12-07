@@ -1,3 +1,4 @@
+// Package lists provides a Linked List data structure with methods like Next, Length, Front and Back.
 package lists
 
 type Element[T any] struct {

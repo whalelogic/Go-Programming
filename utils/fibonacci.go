@@ -1,6 +1,8 @@
 // Package utils implementations from each package 
 package utils 
 
+import "fmt"
+
 
 // FibRecursive generates Fibonacci numbers recursively.
 func FibRecursive(n int) int {
@@ -11,6 +13,38 @@ func FibRecursive(n int) int {
 	} else {
 		return FibRecursive(n-1) + FibRecursive(n-2)
 	} 
+}
+
+
+func Fibonacci(n int) (result int) {
+	if n <= 1 {
+		return n
+	} else {
+		result = Fibonacci(n-1) + Fibonacci(n-2)
+	}
+	return result
+}
+
+
+func GenerateFibs(series []int) []int {
+		// Must use at least 2 integers
+		for len(series) < 2 {
+			fmt.Println("Series must have at least two integers")
+			break
+	}
+		for range(series) {
+			// Get the last element
+			last := len(series) - 1
+			// Get the second to last element
+			// Add them together
+			// Append to the series
+			next := series[last] + series[last-1]
+			// Append result to the series
+
+			series = append(series, next)
+}
+		return series
+	
 }
 
 
