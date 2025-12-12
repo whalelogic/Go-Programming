@@ -6,6 +6,7 @@ import (
 
 	"github.com/whalelogic/Go-Programming/stack"
 	"github.com/whalelogic/Go-Programming/utils"
+	"github.com/whalelogic/Go-Programming/sort"
 )
 
 
@@ -27,6 +28,9 @@ func main() {
 	fmt.Println(slc)
 	fmt.Println(utils.GenerateFibs(slc))
 	fmt.Println(utils.GenerateFibs(slc2))
+
+	fmt.Println(sort.Sort(slc2))
+	fmt.Println(reflect.TypeOf(slc2))
 
 
 	
