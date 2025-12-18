@@ -10,14 +10,19 @@ This repository demonstrates core **data structures** and **algorithms** impleme
 
 | Feature | Description |
 |--------|-------------|
-| `tree/` | Binary trees, insertion, traversal, TreeSort |
-| `sort/` | Implementations of Merge Sort, Quick Sort, Bubble Sort |
+| `treesort/` | Binary trees, insertion, traversal, TreeSort |
+| `sort/` | Implementations of Merge Sort, Quick Sort, Bubble Sort, and more |
 | `structures/` | Stacks, Queues, Linked Lists, and Circular Buffers |
-| `utils/` | Helper functions, benchmarking tools |
+| `utils/` | Helper functions, string functions, benchmarking tools |
 | `web/`  | Handlers, Route-mapping, HTML/TEXT Templates
-| `network/`  | TCP/UDP, Web Socket Programming, UNIX, Transports, Clients
-| `data/` | Marshalling data, pointers, *DB type, Handlers
-
+| `lists/` | Go stdlib Container package implementations
+| `network/`  | TCP Client/Server, Web Sockets, HTTP/S, Transports
+| `concurrency/` | Simple and advanced concurrency applications
+| `files/` | Create, open, read and write to/from files
+| `bin/` | Go binary programs
+| `slices/` | Examples of slice functions and stdlib slice package
+| `input/` | Covers stdio, user input methods
+| `stack/` | Stack and Heap allocation via queues, dequeues, linked lists, etc
 ---
 
 ## 🚀 Example: TreeSort
