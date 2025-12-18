@@ -121,7 +121,6 @@ func main() {
 	rand2 := rand.Int()
 	fmt.Println(rand1+rand2)
 	fmt.Println(reflect.DeepEqual(rand1, rand2))
-	fmt.Println("waahhhh! :/ ")
 
 	// Use the generalArea func 
 	fmt.Println(generalArea(4, 12))

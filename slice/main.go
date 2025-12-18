@@ -1,4 +1,4 @@
-package main 
+package main
 
 import (
 	"fmt"
@@ -54,9 +54,17 @@ func main() {
 	uniqueSlice := slices.Compact(combine)
 	fmt.Println("Unique values from combined slice: ", uniqueSlice)
 
-	// Too easy!
-	// Go's slices package is powerful! Try re-writing the same code and logic without the package. 
-	// If you can do that, you're really in good shape!
+	s, b := slices.BinarySearch(combine, 103)
+	fmt.Printf("Position: %d  Found: %v\n", s, b)
+	// False??
+	// Because slices.BinarySearch() requires the 
+	// slice be pre-sorted in increasing order
+	slices.Sort(combine)
+	s, b = slices.BinarySearch(combine, 103)
+	fmt.Printf("\nIs 103 in the slice? Where?\nFound: %v --> Position: %d\n", b, s)
+	fmt.Println("Now it works!")
+
+
 
 	}
 
