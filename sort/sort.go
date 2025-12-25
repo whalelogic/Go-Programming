@@ -1,3 +1,5 @@
+// Package sort provides basic sorting functionalities similar to 
+// the Go standard library.
 package sort
 
 func Sort(n []int) []int {
@@ -9,4 +11,14 @@ func Sort(n []int) []int {
 		}
 	}
 	return n
+}
+
+func SwapInts(a, b *int) (int, int) {
+	*a, *b = *b, *a
+	return *a, *b
+}
+
+
+func SwapIntsNoPtr(a, b int) (int, int) {
+	return b, a
 }
