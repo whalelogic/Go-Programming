@@ -2,21 +2,27 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"os"
 ) 
 
 
-func GetUserInput(s any) any {
-	r, err := io.ReadAll(os.Stdin)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(string(r))
-	return string(r)
+type Person struct {
+	Name string
+	Age  int
+}
+
+func GetPerson() Person {
+	var p Person
+	fmt.Print("Enter name: ")
+	fmt.Scan(&p.Name)
+	fmt.Print("Enter age: ")
+	fmt.Scan(&p.Age)
+	return p
 }
 
 func main() {
-	g := GetUserInput("Type your name: ")
-	print(g)
+
+	p := GetPerson()
+	fmt.Printf("Hello, %s! You are %d years old.\n", p.Name, p.Age)
+
+
 }

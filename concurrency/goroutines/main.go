@@ -1,29 +1,34 @@
 package main
 
 import (
+	"time"
 	"fmt"
 	"sync"
 )
 
-func StringWorker(s string, wg *sync.WaitGroup) string {
+func  ProcessSim(n int, wg *sync.WaitGroup) int {
 	defer wg.Done()
-	// Simulate some processing
-	result := fmt.Sprintf("Processed string: %s", s)
-	return result
+	sq := n * n
+	fmt.Printf("Processed number: %d, square: %d\n", n, sq)
+	return sq
 }
 
 
-	var mutex = &sync.Mutex{}
-
 func main() {
-
-	go StringWorker("Hello, World!", &sync.WaitGroup{})
 	var wg sync.WaitGroup
 	wg.Add(1)
 	
-	mutex.Lock()
-	result := StringWorker("Hello, World!", &wg)
+	go func() {
+		go ProcessSim(25, &wg)
+		wg.Add(1)
+		time.Sleep(1 * time.Second)
+		go ProcessSim(35, &wg)
+		go ProcessSim(55, &wg)
+		time.Sleep(2 * time.Second)
+	}()
 	wg.Wait()
-	fmt.Println(result)
+	fmt.Println("All goroutines complete.")
+
+
 	
 }

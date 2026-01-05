@@ -3,10 +3,12 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"net/http"
 
 	"github.com/whalelogic/Go-Programming/lists"
 	"github.com/whalelogic/Go-Programming/sort"
 	"github.com/whalelogic/Go-Programming/stack"
+	"github.com/whalelogic/Go-Programming/web"
 )
 
 
@@ -14,7 +16,6 @@ var myList lists.List[int]
 
 func main() {
 	// Stack example
-	// Using our sort functions on it
 	arr2 := []int{3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5}
 	sortedArr := sort.Sort(arr2)
 	fmt.Println(sortedArr)
@@ -34,12 +35,7 @@ func main() {
 	for e := myList.Front(); e != nil; e = e.Next() {
 		fmt.Println(e.Value)
 	}
-	// Remember, Linked Lists are structs
-	// We access their fields using dot notation
 
-	// Built-in methods cap won't work here
-	// fmt.Println(len(myList)) <-- Won't work either
-	// Hence the need for a Length() method (Declared in lists/linkedList.go)
 	fmt.Println("First element: ", myList.Front().Value)
 	fmt.Println("Last element: ", myList.Back().Value)
 	fmt.Println("Length of linked-list: ", myList.Length())
@@ -61,6 +57,11 @@ func main() {
 	}
 	fmt.Println("First element in second list", myList2.Front().Value)
 
+	fmt.Println(http.Protocols{})
+
+	w, a, b := web.NewClient("http://gobyexample.com", http.Protocols{})
+	fmt.Println(w, a, b)
+	
 
 
 }

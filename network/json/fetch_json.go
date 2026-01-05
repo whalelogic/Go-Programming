@@ -26,7 +26,7 @@ func FetchJSON(path string, dst any) error {
 }
 
 // GetJSON is same func as above, just with different return type
-// Here we return a map[string]any instead of reading into a buffer before decoding
+// This time the func returns map[string]any instead of reading into a buffer before decoding
 func GetJSON(path string) (map[string]any, error) {
 	resp, err := http.Get(path)
 	if err != nil {
