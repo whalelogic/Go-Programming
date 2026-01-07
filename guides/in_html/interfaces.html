@@ -1,0 +1,126 @@
+<hr />
+<p>author: Keith Thomson<br />
+categories:</p>
+<ul>
+<li>Programming<br />
+tags:</li>
+<li>go</li>
+<li>interfaces</li>
+<li>golang</li>
+<li>programming<br />
+title: Interfaces in Go</li>
+</ul>
+<hr />
+<h1>Interfaces in Go {#interfaces-in-go .title}</h1>
+<p>An interface in Go is a type that specifies a set of method signatures.<br />
+A type implements an interface by implementing its methods. There is no<br />
+explicit declaration of intent, no &quot;implements&quot; keyword.</p>
+<h2>Defining and Implementing Interfaces {#defining-and-implementing-interfaces .subtitle}</h2>
+<p>You can define an interface using the <code>type</code> and <code>interface</code> keywords.<br />
+Any type that has all the methods of the interface is said to implement<br />
+that interface.</p>
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;math&quot;
+)
+
+// Define an interface
+type Shape interface {
+    Area() float64
+}
+
+// Define a struct
+type Rectangle struct {
+    Width, Height float64
+}
+
+// Implement the Area method for Rectangle
+func (r Rectangle) Area() float64 {
+    return r.Width * r.Height
+}
+
+// Define another struct
+type Circle struct {
+    Radius float64
+}
+
+// Implement the Area method for Circle
+func (c Circle) Area() float64 {
+    return math.Pi * c.Radius * c.Radius
+}
+
+// A function that takes an interface type
+func PrintArea(s Shape) {
+    fmt.Println(&quot;Area:&quot;, s.Area())
+}
+
+func main() {
+    rect := Rectangle{Width: 10, Height: 5}
+    circ := Circle{Radius: 7}
+
+    PrintArea(rect)
+    PrintArea(circ)
+}
+</code></pre>
+<p>In this example, both <code>Rectangle</code> and <code>Circle</code> implement the <code>Shape</code><br />
+interface because they both have an <code>Area()</code> method.</p>
+<h2>The Empty Interface {#the-empty-interface .subtitle}</h2>
+<p>The interface type that specifies zero methods is known as the <strong>empty<br />
+interface</strong>, written as <code>interface{}</code>. An empty interface may hold<br />
+values of any type, because every type has zero or more methods.</p>
+<pre><code>package main
+
+import &quot;fmt&quot;
+
+func describe(i interface{}) {
+    fmt.Printf(&quot;(%v, %T)\n&quot;, i, i)
+}
+
+func main() {
+    var i interface{}
+    describe(i)
+
+    i = 42
+    describe(i)
+
+    i = &quot;hello&quot;
+    describe(i)
+}
+</code></pre>
+<p>The empty interface is often used to handle values of unknown type.</p>
+<h2>Type Assertions {#type-assertions .subtitle}</h2>
+<p>A type assertion provides access to an interface value's underlying<br />
+concrete value. A type assertion takes the form <code>t := i.(T)</code>, where <code>i</code><br />
+is an interface value and <code>T</code> is the asserted type.</p>
+<pre><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+    var i interface{} = &quot;hello&quot;
+
+    s := i.(string)
+    fmt.Println(s)
+
+    s, ok := i.(string)
+    fmt.Println(s, ok)
+
+    f, ok := i.(float64)
+    fmt.Println(f, ok)
+
+    // This will panic because i does not hold a float64
+    // f = i.(float64)
+    // fmt.Println(f)
+}
+</code></pre>
+<h2>Key Features of Interfaces {#key-features-of-interfaces .subtitle}</h2>
+<ul>
+<li><strong>Implicit Implementation:</strong> A type implements an interface simply by<br />
+possessing all the methods the interface requires.</li>
+<li><strong>Polymorphism:</strong> Interfaces allow you to write functions that can<br />
+work with multiple types.</li>
+<li><strong>Decoupling:</strong> Interfaces help to decouple different parts of your<br />
+code, making it more modular and maintainable.</li>
+</ul>

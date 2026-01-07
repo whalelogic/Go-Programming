@@ -1,0 +1,638 @@
+<h1>🧵 Channels &amp; Mutexes 🔒</h1>
+<h3>A Go Reference &amp; Guide</h3>
+<p>A thorough reference and practical guide for using channels and mutexes in Go. This document collects syntax, keywords, type/method tables, idioms, patterns, pitfalls, recipes, and advanced topics with examples and recommendation checklists.</p>
+<p>Contents</p>
+<ul>
+<li>Table of Contents</li>
+<li>Overview</li>
+<li>Channels (syntax, semantics, examples, patterns)</li>
+<li>Channel Quick Reference Table</li>
+<li>Channel Patterns &amp; Recipes</li>
+<li>Mutexes (sync.Mutex, sync.RWMutex, sync.Cond)</li>
+<li>Mutex Quick Reference Table</li>
+<li>Mutex Patterns &amp; Recipes</li>
+<li>Channels vs Mutexes — When to use what</li>
+<li>Concurrency Gotchas, Debugging &amp; Performance</li>
+<li>FAQs &amp; Checklist</li>
+<li>Further reading</li>
+</ul>
+<hr />
+<h2>📚 Table of Contents</h2>
+<ul>
+<li><a href="#-overview">Overview</a></li>
+<li><a href="#-channels--concepts--syntax">Channels — Concepts &amp; Syntax</a>
+<ul>
+<li><a href="#creation--types">Creation &amp; Types</a></li>
+<li><a href="#send--receive--comma-ok">Send / Receive / Comma-ok</a></li>
+<li><a href="#directional-channel-types">Directional channel types</a></li>
+<li><a href="#buffered-vs-unbuffered">Buffered vs Unbuffered</a></li>
+<li><a href="#closing-channels">Closing channels</a></li>
+<li><a href="#range-over-channel">Range over channel</a></li>
+<li><a href="#select-and-non-blocking-ops">select and non-blocking ops</a></li>
+<li><a href="#nil-channels--semantics">Nil channels &amp; semantics</a></li>
+<li><a href="#channel-examples">Channel Examples</a></li>
+</ul>
+</li>
+<li><a href="#-channel-quick-reference-table">Channel Quick Reference Table</a></li>
+<li><a href="#-channel-patterns--recipes">Channel Patterns &amp; Recipes</a>
+<ul>
+<li><a href="#producer-consumer--pipeline">Producer-consumer / Pipeline</a></li>
+<li><a href="#worker-pool--fan-out-fan-in">Worker pool / Fan-out fan-in</a></li>
+<li><a href="#bounded-buffer-with-context-cancellation">Bounded buffer with context cancellation</a></li>
+<li><a href="#broadcast-via-close">Broadcast via close</a></li>
+</ul>
+</li>
+<li><a href="#-mutexes--concepts--syntax">Mutexes — Concepts &amp; Syntax</a>
+<ul>
+<li><a href="#syncmutex">sync.Mutex</a></li>
+<li><a href="#syncrwmutex">sync.RWMutex</a></li>
+<li><a href="#synccond">sync.Cond</a></li>
+<li><a href="#best-practices--common-pitfalls">Best practices &amp; common pitfalls</a></li>
+<li><a href="#mutex-examples">Mutex Examples</a></li>
+</ul>
+</li>
+<li><a href="#-mutex-quick-reference-table">Mutex Quick Reference Table</a></li>
+<li><a href="#-mutex-patterns--recipes">Mutex Patterns &amp; Recipes</a>
+<ul>
+<li><a href="#thread-safe-counters--maps">Thread-safe counters &amp; maps</a></li>
+<li><a href="#read-mostly-caches-with-rwmutex">Read-mostly caches with RWMutex</a></li>
+<li><a href="#condition-variable-example">Condition variable example</a></li>
+</ul>
+</li>
+<li><a href="#-channels-vs-mutexes--choosing--hybrids">Channels vs Mutexes — Choosing &amp; Hybrids</a></li>
+<li><a href="#-concurrency-gotchas--debugging">Concurrency Gotchas &amp; Debugging</a></li>
+<li><a href="#-performance--alternatives">Performance &amp; Alternatives</a></li>
+<li><a href="#-faqs--checklist">FAQs &amp; Checklist</a></li>
+<li><a href="#-further-reading">Further reading</a></li>
+</ul>
+<hr />
+<h2>🔎 Overview</h2>
+<p>Go provides two broad primitives to coordinate concurrent goroutines and manage access to shared state:</p>
+<ul>
+<li>Channels: typed pipes to send/receive values between goroutines. They embody message-passing and are excellent for pipelines, worker pools, and ownership transfer.</li>
+<li>Mutexes: low-level locks (sync.Mutex, sync.RWMutex) for synchronized access to shared in-memory state.</li>
+</ul>
+<p>This guide explains syntax, semantics, idiomatic usage, and patterns for both.</p>
+<hr />
+<h2>🧭 Channels — Concepts &amp; Syntax</h2>
+<p>Channels let goroutines communicate safely and synchronize without explicit locks.</p>
+<h3>Creation &amp; Types</h3>
+<ul>
+<li>make(chan T) — unbuffered (synchronous)</li>
+<li>make(chan T, n) — buffered (capacity n)</li>
+<li>Zero value is nil: var ch chan T</li>
+</ul>
+<p>Examples:</p>
+<pre><code class="language-go">ch := make(chan int)      // unbuffered
+buf := make(chan string, 10) // buffered with capacity 10
+var nilch chan int        // nil channel; blocks on recv/send
+</code></pre>
+<h3>Send / Receive / Comma-ok</h3>
+<ul>
+<li>Send: ch &lt;- v</li>
+<li>Receive: v := &lt;-ch</li>
+<li>Discard receive: &lt;-ch</li>
+<li>Comma-ok: v, ok := &lt;-ch  // ok == false when channel closed and drained</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-go">ch &lt;- 42            // send
+x := &lt;-ch           // receive
+v, ok := &lt;-ch       // ok false if closed
+</code></pre>
+<h3>Directional channel types</h3>
+<ul>
+<li>Bidirectional: chan T</li>
+<li>Send-only: chan&lt;- T</li>
+<li>Receive-only: &lt;-chan T</li>
+</ul>
+<p>Function signatures:</p>
+<pre><code class="language-go">func producer(out chan&lt;- int) { out &lt;- 1 }
+func consumer(in &lt;-chan int)  { fmt.Println(&lt;-in) }
+</code></pre>
+<h3>Buffered vs Unbuffered</h3>
+<ul>
+<li>Unbuffered: send and receive must synchronize; useful for handoff.</li>
+<li>Buffered: send succeeds immediately until buffer fills; decouples sender/receiver timing.</li>
+</ul>
+<h3>Closing channels</h3>
+<ul>
+<li>close(ch) signals no more values will be sent.</li>
+<li>Receivers read remaining values; subsequent reads yield zero values with ok==false.</li>
+<li>Only the sender should close; sending on closed channel panics; closing twice panics.</li>
+</ul>
+<pre><code class="language-go">close(ch)
+v, ok := &lt;-ch // ok == false if drained
+</code></pre>
+<h3>Range over channel</h3>
+<p>Range receives until ch is closed and drained:</p>
+<pre><code class="language-go">for v := range ch {
+    fmt.Println(v)
+}
+</code></pre>
+<h3>select and non-blocking ops</h3>
+<p>select multiplexes channel operations:</p>
+<pre><code class="language-go">select {
+case v := &lt;-ch1:
+    // handle v
+case ch2 &lt;- x:
+    // sent x
+case &lt;-time.After(time.Second):
+    // timeout
+default:
+    // non-blocking fallback
+}
+</code></pre>
+<p>Non-blocking send/receive idiom:</p>
+<pre><code class="language-go">select {
+case ch &lt;- v:
+    // sent
+default:
+    // would block
+}
+</code></pre>
+<h3>Nil channels &amp; semantics</h3>
+<ul>
+<li>A nil channel blocks forever on send and receive.</li>
+<li>Useful for dynamic select: set case channel to nil to disable it.</li>
+</ul>
+<pre><code class="language-go">var ch chan int
+// &lt;-ch // blocks forever
+</code></pre>
+<h3>Panics &amp; gotchas</h3>
+<ul>
+<li>Sending on closed channel =&gt; panic</li>
+<li>Closing closed channel =&gt; panic</li>
+<li>Closing nil channel =&gt; panic</li>
+<li>Range without close (no sender closes) =&gt; deadlock if reader expects termination</li>
+<li>len(cap) are snapshot-ish and race-prone; avoid relying on them for synchronization</li>
+</ul>
+<hr />
+<h2>🧪 Channel Examples</h2>
+<p>Simple handoff:</p>
+<pre><code class="language-go">ch := make(chan string)
+go func() { ch &lt;- &quot;hello&quot; }()
+fmt.Println(&lt;-ch) // prints &quot;hello&quot;
+</code></pre>
+<p>Buffered:</p>
+<pre><code class="language-go">ch := make(chan int, 2)
+ch &lt;- 1
+ch &lt;- 2
+// no blocking yet
+fmt.Println(&lt;-ch, &lt;-ch)
+</code></pre>
+<p>Timeout with select:</p>
+<pre><code class="language-go">select {
+case v := &lt;-ch:
+    fmt.Println(&quot;got&quot;, v)
+case &lt;-time.After(500 * time.Millisecond):
+    fmt.Println(&quot;timeout&quot;)
+}
+</code></pre>
+<p>Producer-consumer pipeline:</p>
+<pre><code class="language-go">func gen(nums ...int) &lt;-chan int {
+    out := make(chan int)
+    go func() {
+        defer close(out)
+        for _, n := range nums {
+            out &lt;- n
+        }
+    }()
+    return out
+}
+func sq(in &lt;-chan int) &lt;-chan int {
+    out := make(chan int)
+    go func() {
+        defer close(out)
+        for n := range in {
+            out &lt;- n*n
+        }
+    }()
+    return out
+}
+</code></pre>
+<hr />
+<h2>📋 Channel Quick Reference Table</h2>
+<table>
+<thead>
+<tr>
+<th>Concept / Function</th>
+<th align="right">Syntax</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Create unbuffered</td>
+<td align="right"><code>make(chan T)</code></td>
+<td>Blocks on send until recv ready</td>
+</tr>
+<tr>
+<td>Create buffered</td>
+<td align="right"><code>make(chan T, n)</code></td>
+<td>Buffer capacity n</td>
+</tr>
+<tr>
+<td>Send</td>
+<td align="right"><code>ch &lt;- v</code></td>
+<td>Blocks if unbuffered or buffer full</td>
+</tr>
+<tr>
+<td>Receive</td>
+<td align="right"><code>v := &lt;-ch</code></td>
+<td>Blocks if empty</td>
+</tr>
+<tr>
+<td>Receive discard</td>
+<td align="right"><code>&lt;-ch</code></td>
+<td>Receive and drop value</td>
+</tr>
+<tr>
+<td>Comma-ok</td>
+<td align="right"><code>v, ok := &lt;-ch</code></td>
+<td>ok==false when closed and drained</td>
+</tr>
+<tr>
+<td>Close</td>
+<td align="right"><code>close(ch)</code></td>
+<td>Panic if closed twice or nil</td>
+</tr>
+<tr>
+<td>Range</td>
+<td align="right"><code>for v := range ch {}</code></td>
+<td>Stops when closed and drained</td>
+</tr>
+<tr>
+<td>Directional types</td>
+<td align="right"><code>chan&lt;- T</code>, <code>&lt;-chan T</code></td>
+<td>Use in function signatures</td>
+</tr>
+<tr>
+<td>len/cap</td>
+<td align="right"><code>len(ch)</code>, <code>cap(ch)</code></td>
+<td>Snapshot; not synchronization tools</td>
+</tr>
+<tr>
+<td>Nil channel</td>
+<td align="right"><code>var ch chan T</code></td>
+<td>Blocks forever on ops</td>
+</tr>
+<tr>
+<td>select</td>
+<td align="right"><code>select { case ... }</code></td>
+<td>Multiplexing, default for non-blocking</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>🔧 Channel Patterns &amp; Recipes</h2>
+<h3>Producer-consumer / Pipeline</h3>
+<ul>
+<li>Use chaining functions that return receive-only channels.</li>
+<li>Always close the channel from the producer when done.</li>
+<li>Keep pipelines cancellable using context.Context.</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-go">func generator(ctx context.Context, nums ...int) &lt;-chan int {
+    out := make(chan int)
+    go func() {
+        defer close(out)
+        for _, n := range nums {
+            select {
+            case &lt;-ctx.Done():
+                return
+            case out &lt;- n:
+            }
+        }
+    }()
+    return out
+}
+</code></pre>
+<h3>Worker pool (fan-out / fan-in)</h3>
+<ul>
+<li>Fan-out: multiple workers read from same input channel.</li>
+<li>Fan-in: aggregate worker results into a single output channel.</li>
+</ul>
+<p>Sketch:</p>
+<pre><code class="language-go">func worker(id int, jobs &lt;-chan Job, results chan&lt;- Result) {
+    for j := range jobs {
+        // process
+        results &lt;- result
+    }
+}
+
+jobs := make(chan Job)
+results := make(chan Result)
+for w := 0; w &lt; nW; w++ {
+    go worker(w, jobs, results)
+}
+// send jobs then close jobs
+</code></pre>
+<p>Use sync.WaitGroup to close results after all workers finish:</p>
+<pre><code class="language-go">var wg sync.WaitGroup
+for i := 0; i &lt; n; i++ {
+    wg.Add(1)
+    go func() {
+        defer wg.Done()
+        // worker loop
+    }()
+}
+go func() {
+    wg.Wait()
+    close(results)
+}()
+</code></pre>
+<h3>Bounded buffer + cancellation</h3>
+<p>Combine buffered channels with context to build cancelable queues.</p>
+<h3>Broadcast via close</h3>
+<ul>
+<li>For one-time broadcast (no more values), send values into a channel, then close; receivers do range and exit when drained.</li>
+<li>To broadcast the same value to many receivers, use a separate channel per receiver or use a &quot;fan-out&quot; goroutine that duplicates the stream.</li>
+</ul>
+<hr />
+<h2>🔒 Mutexes — Concepts &amp; Syntax</h2>
+<p>Mutexes are for protecting shared memory when multiple goroutines access or mutate it.</p>
+<h3>sync.Mutex</h3>
+<ul>
+<li>Type: sync.Mutex</li>
+<li>Methods:
+<ul>
+<li>mu.Lock()</li>
+<li>mu.Unlock()</li>
+</ul>
+</li>
+<li>Zero value is an unlocked Mutex.</li>
+</ul>
+<p>Idioms:</p>
+<pre><code class="language-go">var mu sync.Mutex
+mu.Lock()
+defer mu.Unlock()
+// critical section
+</code></pre>
+<p>Rules:</p>
+<ul>
+<li>Do not copy a Mutex after first use (copying breaks it).</li>
+<li>Locks are not reentrant — Lock twice in the same goroutine deadlocks.</li>
+</ul>
+<h3>sync.RWMutex</h3>
+<ul>
+<li>Type: sync.RWMutex</li>
+<li>Methods:
+<ul>
+<li>mu.RLock()</li>
+<li>mu.RUnlock()</li>
+<li>mu.Lock()</li>
+<li>mu.Unlock()</li>
+</ul>
+</li>
+</ul>
+<p>Use RLock for read-only access when many readers and few writers.</p>
+<p>Pitfalls:</p>
+<ul>
+<li>Avoid upgrading from RLock to Lock while holding RLock — deadlock risk.</li>
+<li>Prefer simple Mutex if RW complexity doesn't help.</li>
+</ul>
+<h3>sync.Cond</h3>
+<ul>
+<li>Use for wait/notify semantics with an associated Locker (often *sync.Mutex).</li>
+<li>Create: cond := sync.NewCond(&amp;mu)</li>
+<li>Methods:
+<ul>
+<li>cond.Wait() — atomically release lock and wait; reacquire lock before returning.</li>
+<li>cond.Signal() — wake one waiter.</li>
+<li>cond.Broadcast() — wake all waiters.</li>
+</ul>
+</li>
+</ul>
+<p>Pattern:</p>
+<pre><code class="language-go">mu := &amp;sync.Mutex{}
+cond := sync.NewCond(mu)
+mu.Lock()
+for !ready {
+    cond.Wait()
+}
+mu.Unlock()
+</code></pre>
+<h3>Best practices &amp; common pitfalls</h3>
+<ul>
+<li>Always Unlock with defer immediately after Lock.</li>
+<li>Keep critical sections small and avoid blocking operations while holding a mutex (I/O, network, time.Sleep).</li>
+<li>Never copy Mutex/RWMutex once used (store in struct, pass pointer to struct if necessary).</li>
+<li>Use RWMutex when reads greatly outnumber writes and contention matters.</li>
+<li>Prefer channels for coordination (signaling, ownership) and mutexes for protecting shared state.</li>
+</ul>
+<hr />
+<h2>🧪 Mutex Examples</h2>
+<p>Counter:</p>
+<pre><code class="language-go">type Counter struct {
+    mu sync.Mutex
+    n  int
+}
+func (c *Counter) Inc() {
+    c.mu.Lock()
+    defer c.mu.Unlock()
+    c.n++
+}
+func (c *Counter) Value() int {
+    c.mu.Lock()
+    defer c.mu.Unlock()
+    return c.n
+}
+</code></pre>
+<p>Read-mostly cache with RWMutex:</p>
+<pre><code class="language-go">type SafeCache struct {
+    mu sync.RWMutex
+    m  map[string]string
+}
+func (c *SafeCache) Get(k string) (string, bool) {
+    c.mu.RLock()
+    v, ok := c.m[k]
+    c.mu.RUnlock()
+    return v, ok
+}
+func (c *SafeCache) Set(k, v string) {
+    c.mu.Lock()
+    c.m[k] = v
+    c.mu.Unlock()
+}
+</code></pre>
+<p>Condition variable (producer/consumer):</p>
+<pre><code class="language-go">type Queue struct {
+    mu    sync.Mutex
+    cond  *sync.Cond
+    items []int
+}
+func NewQueue() *Queue {
+    q := &amp;Queue{}
+    q.cond = sync.NewCond(&amp;q.mu)
+    return q
+}
+func (q *Queue) Push(x int) {
+    q.mu.Lock()
+    q.items = append(q.items, x)
+    q.mu.Unlock()
+    q.cond.Signal()
+}
+func (q *Queue) Pop() int {
+    q.mu.Lock()
+    for len(q.items) == 0 {
+        q.cond.Wait()
+    }
+    x := q.items[0]
+    q.items = q.items[1:]
+    q.mu.Unlock()
+    return x
+}
+</code></pre>
+<hr />
+<h2>📋 Mutex Quick Reference Table</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th align="right">Methods / Ops</th>
+<th align="center">Zero-value usable?</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sync.Mutex</td>
+<td align="right">Lock(), Unlock()</td>
+<td align="center">Yes</td>
+<td>Not reentrant; don't copy</td>
+</tr>
+<tr>
+<td>sync.RWMutex</td>
+<td align="right">RLock(), RUnlock(), Lock(), Unlock()</td>
+<td align="center">Yes</td>
+<td>Readers/writers semantics</td>
+</tr>
+<tr>
+<td>sync.Cond</td>
+<td align="right">Wait(), Signal(), Broadcast()</td>
+<td align="center">N/A (needs Locker)</td>
+<td>Use with a Locker (often *sync.Mutex)</td>
+</tr>
+</tbody>
+</table>
+<p>Common patterns:</p>
+<ul>
+<li>mu.Lock(); defer mu.Unlock()</li>
+<li>mu.RLock(); defer mu.RUnlock()</li>
+</ul>
+<hr />
+<h2>🛠️ Mutex Patterns &amp; Recipes</h2>
+<h3>Thread-safe map / cache</h3>
+<p>Go's standard maps are not safe for concurrent writes. Use a mutex:</p>
+<pre><code class="language-go">type SafeMap struct {
+    mu sync.Mutex
+    m  map[string]int
+}
+func (s *SafeMap) Load(k string) (int, bool) {
+    s.mu.Lock()
+    v, ok := s.m[k]
+    s.mu.Unlock()
+    return v, ok
+}
+func (s *SafeMap) Store(k string, v int) {
+    s.mu.Lock()
+    s.m[k] = v
+    s.mu.Unlock()
+}
+</code></pre>
+<p>For high read concurrency, use sync.RWMutex or sync.Map (concurrent map in stdlib for specific patterns).</p>
+<h3>Double-checked locking (careful!)</h3>
+<p>Avoid naïve double-checked locking. Use sync.Once or channels.</p>
+<p>Use sync.Once for lazy initialization:</p>
+<pre><code class="language-go">var once sync.Once
+var cfg *Config
+func GetConfig() *Config {
+    once.Do(func() { cfg = loadConfig() })
+    return cfg
+}
+</code></pre>
+<h3>Condition variable example</h3>
+<p>See queue example above.</p>
+<hr />
+<h2>⚖️ Channels vs Mutexes — Choosing &amp; Hybrids</h2>
+<p>When to use channels:</p>
+<ul>
+<li>You can model the problem as passing ownership or messages between goroutines.</li>
+<li>Pipelines, worker pools, timeouts, throttling, bounded queues.</li>
+<li>Prefer when you want to avoid shared mutable state.</li>
+</ul>
+<p>When to use mutexes:</p>
+<ul>
+<li>You have shared memory (counters, caches, maps) with fine-grained reads/writes.</li>
+<li>Performance-sensitive sections where channel overhead is too high.</li>
+<li>Complex structures where explicit locking is simpler.</li>
+</ul>
+<p>Hybrid:</p>
+<ul>
+<li>Use channels for control flow and mutexes for protecting in-memory caches behind the scenes.</li>
+<li>Use channels to serialize access (single goroutine actor model) if suitable: one goroutine owns the state and services request messages on a channel (avoids mutexes).</li>
+</ul>
+<p>Example actor pattern:</p>
+<pre><code class="language-go">type request struct{ key string; resp chan&lt;- int }
+func actor(reqs &lt;-chan request) {
+    store := make(map[string]int)
+    for r := range reqs {
+        r.resp &lt;- store[r.key]
+    }
+}
+</code></pre>
+<hr />
+<h2>⚠️ Concurrency Gotchas &amp; Debugging</h2>
+<ul>
+<li>Race conditions: use <code>go test -race</code> or <code>go run -race</code> to detect data races.</li>
+<li>Deadlocks: common causes include waiting on channels that no goroutine will write to, or double-locking mutexes.</li>
+<li>Panic on send to closed channel or closing already closed channel.</li>
+<li>Blocking on nil channels causes goroutine hang.</li>
+<li>Avoid long blocking operations while holding a mutex.</li>
+</ul>
+<p>Debugging tips:</p>
+<ul>
+<li>Reproduce with race detector.</li>
+<li>Add logging with goroutine IDs (use third-party libraries or attach request IDs).</li>
+<li>Break problems into smaller testable components.</li>
+<li>Use context.Context for cancellation propagation.</li>
+</ul>
+<hr />
+<h2>🚀 Performance &amp; Alternatives</h2>
+<ul>
+<li>Channels are slightly heavier than raw mutex when used for extremely hot-path synchronization. For counters and simple state, consider <code>sync/atomic</code>.</li>
+<li><code>sync.Map</code> is optimized for certain read-heavy concurrent maps.</li>
+<li><code>sync.Pool</code> for object pooling.</li>
+<li>Keep locks small and critical sections short. Avoid I/O in critical section.</li>
+<li>For very high throughput, microbench with <code>go test -bench</code> and <code>-benchmem</code> to compare channels vs mutexes vs atomics.</li>
+</ul>
+<hr />
+<h2>✅ FAQs &amp; Checklist</h2>
+<p>Q: Who should close a channel?<br />
+A: The sender. Close signals no more values.</p>
+<p>Q: Can I read from a closed channel?<br />
+A: Yes; receives return zero value and ok==false.</p>
+<p>Q: Is Mutex zero value usable?<br />
+A: Yes.</p>
+<p>Q: Should I use defer Unlock always?<br />
+A: Usually yes — it ensures unlock on all return paths. In super-hot code, sometimes explicit Unlock is used to avoid defer cost; measure first.</p>
+<p>Q: How to avoid deadlock while upgrading RLock to Lock?<br />
+A: Don't upgrade. Instead, release RLock and then Lock (with potential retry), or use a different design.</p>
+<p>Checklist before shipping concurrent code:</p>
+<ul>
+<li><input disabled="" type="checkbox" /> Run tests with -race</li>
+<li><input disabled="" type="checkbox" /> Add timeouts / context where blocking can occur</li>
+<li><input disabled="" type="checkbox" /> Keep critical sections short</li>
+<li><input disabled="" type="checkbox" /> Avoid copying Mutex-containing structs</li>
+<li><input disabled="" type="checkbox" /> Ensure all senders close channels or use other termination signals</li>
+<li><input disabled="" type="checkbox" /> Use sync.Once for one-time initialization</li>
+</ul>
+<hr />
+<h2>📖 Further reading</h2>
+<ul>
+<li>Official Go blog — <a href="https://go.dev/blog/pipelines">Go Concurrency Patterns</a></li>
+<li>sync package docs — <a href="https://pkg.go.dev/sync">sync</a></li>
+<li>Effective Go — <a href="https://go.dev/doc/effective_go#concurrency">Effective Go - Concurrency</a></li>
+<li>Go Memory Model — <a href="https://go.dev/ref/mem">The Go Memory Model</a></li>
+</ul>
+<hr />

@@ -3,12 +3,10 @@ package main
 import (
 	"fmt"
 	"strconv"
-	"net/http"
 
 	"github.com/whalelogic/Go-Programming/lists"
 	"github.com/whalelogic/Go-Programming/sort"
 	"github.com/whalelogic/Go-Programming/stack"
-	"github.com/whalelogic/Go-Programming/web"
 )
 
 
@@ -57,10 +55,7 @@ func main() {
 	}
 	fmt.Println("First element in second list", myList2.Front().Value)
 
-	fmt.Println(http.Protocols{})
 
-	w, a, b := web.NewClient("http://gobyexample.com", http.Protocols{})
-	fmt.Println(w, a, b)
 	
 
 
