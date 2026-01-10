@@ -1,5 +1,5 @@
-// Package fetch fetches the content of a url and prints it to the console
-package fetch 
+// Package fetch performs a GET request to url, the content of which gets printed to the console
+package main 
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ func main() {
 
 	// check if there are command line arguments
 	if len(os.Args) < 2 {
-		log.Print("Must enter at least one url")
+		log.Print("Please add a url as a command line argument 'e.g. go run fetch.go http://example.com'")
 		os.Exit(1)
 	}
 

@@ -1,5 +1,5 @@
 // Package web contains web relatd utilities.
-package main
+package clients
 
 import (
 	"io"

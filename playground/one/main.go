@@ -2,7 +2,11 @@ package main
 
 import (
 	"fmt"
+	"time"
 	"os"
+	"io"
+	"strings"
+	"log"
 )
 
 func printer(in <-chan int) {
@@ -32,6 +36,7 @@ func main() {
 	i := 0
 	for i < 9 {
 		c <- i
+		time.Sleep(100 * time.Millisecond)
 		i++
 	}
 	close(c)
@@ -46,7 +51,26 @@ func main() {
 	}
 	close(f)
 
+	r := strings.NewReader("some io.Reader stream to be read\n")
 
+	var buf1, buf2 strings.Builder
+	w := io.MultiWriter(&buf1, &buf2)
 
+	if _, err := io.Copy(w, r); err != nil {
+    	log.Fatal(err)
+	}
+
+	fmt.Print(buf1.String())
+	fmt.Print(buf2.String())
+
+	r = strings.NewReader("some io.Reader stream to be read\n")
+	s := io.NewSectionReader(r, 0, 5)
+	fmt.Println(s.Size())
+	fmt.Println(s.Read(make([]byte, 5)))
+	// output: some
+
+	if _, err := io.Copy(os.Stdout, s); err != nil {
+    	log.Fatal(err)
+	}
 
 }

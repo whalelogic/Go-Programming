@@ -1,4 +1,4 @@
-module github.com/whalelogic/Go-Programming
+module github.com/Go-Programming/web
 
 go 1.25.1
 
