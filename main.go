@@ -7,7 +7,17 @@ import (
 	"github.com/whalelogic/Go-Programming/lists"
 	"github.com/whalelogic/Go-Programming/sort"
 	"github.com/whalelogic/Go-Programming/stack"
+	"github.com/whalelogic/Go-Programming/recursion"
 )
+
+
+func fib(n int) int {
+	if n <= 1 {
+		return n
+	}
+	return fib(n-1) + fib(n-2)
+}
+
 
 
 var myList lists.List[int]
@@ -47,13 +57,14 @@ func main() {
 	if ok {
 		fmt.Println("Removed front element: ", v)
 	}
-	var myList2 lists.List[string]
-	myList2.PushBack("Hello")
-	myList2.PushBack("World")
-	for e := myList2.Front(); e != nil; e = e.Next() {
-		fmt.Println(e.Value)
-	}
-	fmt.Println("First element in second list", myList2.Front().Value)
+
+	fact := recursion.Factor(5)
+	var t []string
+	t = append(t, "Factorial of 5 is: "+strconv.Itoa(fact))
+
+	print(t)
+
+	fmt.Println("Fibonacci of 7 is: ", fib(7))
 
 
 	

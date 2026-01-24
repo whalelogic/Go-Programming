@@ -1,5 +1,5 @@
-// Package utils implementations from each package 
-package utils 
+// Package recursion implementations from each package 
+package recursion 
 
 import "fmt"
 

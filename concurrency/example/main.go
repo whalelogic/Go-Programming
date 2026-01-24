@@ -23,11 +23,8 @@ func main() {
 	go SpaceOne(ch1)
 	go SpaceTwo(ch2)
 
-	// give some time for goroutines to start
 	time.Sleep(1 * time.Second)
 	select {
-	// select will choose 'one' or 'two'
-	// if both are ready, it will choose randomly
 	case one := <-ch1:
 		fmt.Println(one)
 	case two := <- ch2:
