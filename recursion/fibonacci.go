@@ -7,7 +7,7 @@ import "fmt"
 // FibRecursive generates Fibonacci numbers recursively.
 func FibRecursive(n int) int {
 	if n <= 0 {
-		return 0
+	return 0
 	} else if n == 1 {
 		return 1
 	} else {
