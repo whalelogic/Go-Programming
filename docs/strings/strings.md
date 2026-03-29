@@ -87,7 +87,7 @@ The `strconv` package (string conversion) is used for converting strings to and 
 -   `strconv.Itoa(i int)`: Converts an integer to a string.
 -   `strconv.Atoi(s string)`: Converts a string to an integer.
 -   `strconv.ParseFloat(s string, bitSize int)`: Converts a string to a float.
--a  `strconv.FormatFloat(f float64, fmt byte, prec, bitSize int)`: Converts a float to a string.
+-   `strconv.FormatFloat(f float64, fmt byte, prec, bitSize int)`: Converts a float to a string.
 -   `strconv.ParseBool(s string)`: Converts a string to a boolean.
 -   `strconv.FormatBool(b bool)`: Converts a boolean to a string.
 

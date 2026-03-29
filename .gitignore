@@ -1,0 +1,12 @@
+# Compiled binaries
+bin/
+out/
+*.exe
+*.out
+
+# Build artifacts
+*.test
+
+# Go workspace
+go.work
+go.work.sum

@@ -24,7 +24,7 @@ func SumSlice(n []int) int {
 }
 
 func RecursiveSum(n []int) (int) {
-	// This len(n) control statement is neccessary or it will run forever or not at all.
+	// This len(n) control statement is necessary or it will run forever or not at all.
 	if len(n) == 0 {
 		return 0
 	}

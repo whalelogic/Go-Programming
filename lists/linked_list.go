@@ -1,5 +1,5 @@
 // Package lists implements a Linked List data structure
-package main
+package lists
 
 type Element[T any] struct {
 	Value T
