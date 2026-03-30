@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="/" class="back-link">← Back to Index</a>
+            </nav>
+            <h1>{{.Title}}</h1>
+        </header>
+        
+        <main>
+            <article class="markdown-content">
+                {{.Content}}
+            </article>
+        </main>
+        
+        <aside class="sidebar">
+            <h3>Other Files</h3>
+            <ul class="file-list">
+                {{range .Files}}
+                <li>
+                    <a href="/view/{{.Path}}">{{.Name}}</a>
+                    <span class="category-tag">{{.Category}}</span>
+                </li>
+                {{end}}
+            </ul>
+        </aside>
+    </div>
+</body>
+</html>

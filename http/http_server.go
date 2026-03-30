@@ -1,5 +1,5 @@
-// Package web provides a simple HTTP server implementation.
-package web
+// Package http provides a simple HTTP server implementation.
+package http
 
 import (
 	"log"

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>📚 Go Programming Documentation</h1>
+                <p class="subtitle">A comprehensive collection of Go programming guides and references</p>
+            </div>
+        </header>
+        
+        <main class="index-main">
+            <div class="content-wrapper">
+                <div class="stats-bar">
+                    <span class="stat-item">📄 {{len .Files}} Documents</span>
+                </div>
+                
+                <div class="file-table-wrapper">
+                    <table class="file-table">
+                        <thead>
+                            <tr>
+                                <th class="col-name">Document</th>
+                                <th class="col-category">Category</th>
+                                <th class="col-path">Path</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .Files}}
+                            <tr class="file-row" onclick="window.location='/view/{{.Path}}'">
+                                <td class="col-name">
+                                    <a href="/view/{{.Path}}" class="file-link">
+                                        <span class="file-icon">📄</span>
+                                        <span class="file-name">{{.Name}}</span>
+                                    </a>
+                                </td>
+                                <td class="col-category">
+                                    {{if ne .Category "Root"}}
+                                        <span class="category-badge">{{.Category}}</span>
+                                    {{else}}
+                                        <span class="category-badge root">Documentation</span>
+                                    {{end}}
+                                </td>
+                                <td class="col-path">
+                                    <span class="path-text">{{.Path}}</span>
+                                </td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

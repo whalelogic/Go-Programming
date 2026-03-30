@@ -1,4 +1,4 @@
-package main
+package filops
 
 
 import (
@@ -9,7 +9,7 @@ import (
 )
 
 
-func main() {
+func DoSomethingWithFile() {
 
 	fsys := fstest.MapFS{
 		"test.txt": 	{},
@@ -53,6 +53,5 @@ func main() {
 		panic(err)
 	}
 	println("Content:", string(content))
-
 
 }
