@@ -12,17 +12,25 @@ This repository demonstrates core **data structures** and **algorithms** impleme
 |--------|-------------|
 | `treesort/` | Binary trees, insertion, traversal, TreeSort |
 | `sort/` | Implementations of Merge Sort, Quick Sort, Bubble Sort, and more |
-| `structures/` | Stacks, Queues, Linked Lists, and Circular Buffers |
-| `utils/` | Helper functions, string functions, benchmarking tools |
-| `web/`  | Handlers, Route-mapping, HTML/TEXT Templates
-| `lists/` | Go stdlib Container package implementations
+| `linked_list/` | Stacks, Queues, Linked Lists, and Circular Buffers |
+| `utilities/` | Helper functions, string functions, benchmarking tools |
+| `maps/` | Covers Go's built-in map type, including examples of usage and common patterns | 
+| `strings/` | Covers Go's built-in string type, including examples of usage and common patterns | 
+| `examples/` | Runnable examples | 
+| `web/`  | HTML/Template rendering, HTTP Servers, REST APIs, WebSockets, Go Spec |
+| `stdlib_refs/` | Go stdlib package references and examples
 | `network/`  | TCP Client/Server, Web Sockets, HTTP/S, Transports
 | `concurrency/` | Simple and advanced concurrency applications
-| `files/` | Create, open, read and write to/from files
+| `fileops/` | Create, open, read and write to/from files
 | `bin/` | Go binary programs
-| `slices/` | Examples of slice functions and stdlib slice package
+| `slice/` | Examples of slice functions and stdlib slice package
 | `input/` | Covers stdio, user input methods
 | `stack/` | Stack and Heap allocation via queues, dequeues, linked lists, etc
+| `recursion/` | Covers recursive functions, tail recursion, and common recursive algorithms
+| `stack/` | Covers stack and heap memory management, with examples of stack and heap allocation. 
+| `/filters` | Covers common filter functions, such as map, reduce, and filter, with examples of their usage in Go. 
+| `/http` | Covers HTTP client and server implementations, including examples of handling requests, responses, and middleware. 
+
 ---
 
 ## 🚀 Example: TreeSort
