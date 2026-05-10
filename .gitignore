@@ -1,8 +1,29 @@
-./output
-./.vscode
-./.idea
-./.DS_Store
-./node_modules
-./dist
-./build
-./bin
+# Binaries and executable files
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output and build artifacts
+output/
+dist/
+build/
+
+# Dependency directories
+vendor/
+node_modules/
+
+# IDE and OS specific files
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+
+# Go specific
+go.work
+go.work.sum

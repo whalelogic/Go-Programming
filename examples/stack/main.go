@@ -2,19 +2,19 @@ package main
 
 import (
 	"fmt"
-	"github.com/whalelogic/Go-Programming/stack"
+	"github.com/whalelogic/Go-Programming/data_structures/stack"
 )
 
 
 
 // Create a stack using the stack package and perform some operations on it.
-// s is the variable that holds this stack instance. It means create a Stack struct 
-// from the stack package and assign it to s.
+// s is the variable that holds this stack instance. 
+
 var s stack.Stack
 
 // Type of s is stack.Stack, which is a struct defined in the stack package.
-// View the methods of the stack package to see what operations we can perform on s.
-// Completion should show methods like Push, Pop, Peek, Print, etc.
+// Use methods like Push, Pop, Peek, and Print to manipulate the stack and display its contents.
+
 func main() {
 	s.Push(1)
 	s.Push(2)
