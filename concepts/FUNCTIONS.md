@@ -15,6 +15,21 @@ Functions are central to Go. They are the building blocks of a Go
 program and are used to perform specific tasks. This section covers the
 basics of creating and using functions in Go.
 
+## Quick Reference Table
+
+| Feature | Syntax Example | Description |
+| :--- | :--- | :--- |
+| **Basic Function** | `func name(p type) ret` | Standard function definition. |
+| **Multiple Parameters** | `func name(a, b int)` | Shortened type syntax for consecutive params. |
+| **Multiple Returns** | `func name() (int, error)` | Returning multiple values, often for error handling. |
+| **Named Returns** | `func name() (res int)` | Declaring return variables in the signature. |
+| **Variadic** | `func name(a ...int)` | Accepts zero or more arguments of a specific type. |
+| **Anonymous** | `func(x int) { ... }(10)` | Function literal, can be called immediately. |
+| **Closures** | `func() { fmt.Print(x) }` | Functions that reference variables outside their body. |
+| **Methods** | `func (r T) name()` | Functions associated with a specific type (receiver). |
+
+---
+
 ## Defining and Calling Functions {#defining-and-calling-functions .subtitle}
 
 A function is defined with the `func` keyword, followed by the function

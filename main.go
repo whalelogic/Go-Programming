@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/whalelogic/Go-Programming/lists"
+	"github.com/whalelogic/Go-Programming/ll"
 	"github.com/whalelogic/Go-Programming/sort"
 	"github.com/whalelogic/Go-Programming/stack"
 	"github.com/whalelogic/Go-Programming/recursion"
@@ -20,7 +20,7 @@ func fib(n int) int {
 
 
 
-var myList lists.List[int]
+var myList ll.List[int]
 
 func main() {
 	// Stack example

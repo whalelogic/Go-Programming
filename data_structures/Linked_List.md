@@ -1,6 +1,25 @@
 # Linked Lists in Go
 
-This guide explores the concept of linked lists in Go, covering both custom implementations and the use of the standard library's `container/list` package.
+This guide explores linked lists in Go, covering both custom implementations and the `container/list` package.
+
+## Quick Reference: `container/list`
+
+| Function / Method | Signature | Description |
+| :--- | :--- | :--- |
+| **New** | `func New() *List` | Creates a new doubly linked list. |
+| **PushFront** | `func (l *List) PushFront(v any) *Element` | Adds element to the front. |
+| **PushBack** | `func (l *List) PushBack(v any) *Element` | Adds element to the back. |
+| **InsertBefore** | `func (l *List) InsertBefore(v any, mark *Element) *Element` | Inserts `v` before `mark`. |
+| **InsertAfter** | `func (l *List) InsertAfter(v any, mark *Element) *Element` | Inserts `v` after `mark`. |
+| **Remove** | `func (l *List) Remove(e *Element) any` | Removes `e` from the list. |
+| **Front** | `func (l *List) Front() *Element` | Returns the first element. |
+| **Back** | `func (l *List) Back() *Element` | Returns the last element. |
+| **Len** | `func (l *List) Len() int` | Returns the number of elements. |
+| **Init** | `func (l *List) Init() *List` | Clears the list. |
+| **Next** | `func (e *Element) Next() *Element` | Returns the next element. |
+| **Prev** | `func (e *Element) Prev() *Element` | Returns the previous element. |
+
+---
 
 ## 1. What is a Linked List?
 

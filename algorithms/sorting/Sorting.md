@@ -1,6 +1,23 @@
 # Sorting in Go
 
-This guide covers how to sort data in Go using the standard library's `sort` package. Sorting is a common operation, and Go provides a powerful and flexible set of tools to handle it.
+This guide covers how to sort data in Go using the standard library's `sort` package.
+
+## Quick Reference: `sort` Package
+
+| Function / Method | Signature | Description |
+| :--- | :--- | :--- |
+| **Ints** | `func Ints(x []int)` | Sorts a slice of ints in ascending order. |
+| **Strings** | `func Strings(x []string)` | Sorts a slice of strings in ascending order. |
+| **Float64s** | `func Float64s(x []float64)` | Sorts a slice of float64s in ascending order. |
+| **Slice** | `func Slice(x any, less func(i, j int) bool)` | Sorts a slice using a custom `less` function. |
+| **SliceStable**| `func SliceStable(x any, less func(i, j int) bool)` | Performs a stable sort (keeps order of equals). |
+| **Sort** | `func Sort(data Interface)` | Sorts a collection implementing `sort.Interface`. |
+| **SearchInts** | `func SearchInts(a []int, x int) int` | Binary search for `x` in sorted slice `a`. |
+| **Search** | `func Search(n int, f func(int) bool) int` | Generic binary search for index `i` where `f(i)` is true. |
+| **IsSorted** | `func IsSorted(data Interface) bool` | Checks if a collection is sorted. |
+| **Reverse** | `func Reverse(data Interface) Interface` | Returns a reversed view of the collection. |
+
+---
 
 ## 1. The `sort` Package
 

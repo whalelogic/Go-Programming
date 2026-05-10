@@ -4,7 +4,24 @@
 
 Run the code in `main.go` to see examples in action.
 
-This guide provides a comprehensive look at slices in Go. Slices are one of the most powerful and versatile features of Go, and a solid understanding of them is crucial for any Go developer.
+## Quick Reference: Slice Operations
+
+| Operation | Built-in / Package | Syntax / Function | Description |
+| :--- | :--- | :--- | :--- |
+| **Creation** | Built-in | `make([]T, len, cap)` | Initializes a slice with length and capacity. |
+| **Length** | Built-in | `len(s)` | Returns the number of elements. |
+| **Capacity** | Built-in | `cap(s)` | Returns the max size before reallocation. |
+| **Append** | Built-in | `append(s, e1, e2)` | Adds elements to the end. |
+| **Copy** | Built-in | `copy(dst, src)` | Copies elements between slices. |
+| **Sort** | `slices` | `slices.Sort(s)` | Sorts the slice in-place. |
+| **Contains** | `slices` | `slices.Contains(s, v)` | Checks if value exists in slice. |
+| **Index** | `slices` | `slices.Index(s, v)` | Returns index of first occurrence. |
+| **Delete** | `slices` | `slices.Delete(s, i, j)` | Removes elements from index `i` to `j`. |
+| **Compact** | `slices` | `slices.Compact(s)` | Replaces consecutive runs of equal elements. |
+| **Clone** | `slices` | `slices.Clone(s)` | Returns a shallow copy. |
+| **Min / Max** | `slices` | `slices.Min(s)`, `slices.Max(s)` | Returns min/max element in slice. |
+
+---
 
 ## 1. What is a Slice?
 

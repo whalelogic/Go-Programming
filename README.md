@@ -1,46 +1,65 @@
-# 🧠 Go Programming
+# 🧠 Go Programming: Learning & Reference
 
-This repository demonstrates core **data structures** and **algorithms** implemented in **Go (Golang)** — with a focus on performance, clarity, and idiomatic code.
-
->Note: Each directory contains a README.md which provides a basic walkthrough, helpful tips, as well as easy to understand implementations of the types, interfaces, functions and methods commonly used in the Go stdlib.
+This repository is a comprehensive learning resource for **Go (Golang)**, featuring core language concepts, data structures, algorithms, and advanced topics. It focuses on performance, clarity, and idiomatic code, with detailed technical reference tables for the standard library.
 
 ---
 
-## 📚 Contents
+## 📚 Repository Structure
 
-| Feature | Description |
-|--------|-------------|
-| `treesort/` | Binary trees, insertion, traversal, TreeSort |
-| `sort/` | Implementations of Merge Sort, Quick Sort, Bubble Sort, and more |
-| `linked_list/` | Stacks, Queues, Linked Lists, and Circular Buffers |
-| `utilities/` | Helper functions, string functions, benchmarking tools |
-| `maps/` | Covers Go's built-in map type, including examples of usage and common patterns | 
-| `strings/` | Covers Go's built-in string type, including examples of usage and common patterns | 
-| `examples/` | Runnable examples | 
-| `web/`  | HTML/Template rendering, HTTP Servers, REST APIs, WebSockets, Go Spec |
-| `stdlib_refs/` | Go stdlib package references and examples
-| `network/`  | TCP Client/Server, Web Sockets, HTTP/S, Transports
-| `concurrency/` | Simple and advanced concurrency applications
-| `fileops/` | Create, open, read and write to/from files
-| `bin/` | Go binary programs
-| `slice/` | Examples of slice functions and stdlib slice package
-| `input/` | Covers stdio, user input methods
-| `stack/` | Stack and Heap allocation via queues, dequeues, linked lists, etc
-| `recursion/` | Covers recursive functions, tail recursion, and common recursive algorithms
-| `stack/` | Covers stack and heap memory management, with examples of stack and heap allocation. 
-| `/filters` | Covers common filter functions, such as map, reduce, and filter, with examples of their usage in Go. 
-| `/http` | Covers HTTP client and server implementations, including examples of handling requests, responses, and middleware. 
+The repository is organized by topic to make finding specific information and examples easy.
+
+### 1. [Concepts](./concepts/)
+Core language fundamentals and mechanics.
+- **[Variables](./concepts/VARIABLES.md)**: Declarations, types, and scope.
+- **[Functions](./concepts/FUNCTIONS.md)**: Technical table of function features, closures, and variadic parameters.
+- **[Structs](./concepts/STRUCTS.md)**: Custom types and composition.
+- **[Interfaces](./concepts/INTERFACES.md)**: Duck typing and decoupling in Go.
+- **[Errors](./concepts/ERRORS.md)**: Idiomatic error handling patterns.
+- **[Language Spec](./concepts/spec/)**: Official Go specification files.
+
+### 2. [Data Structures](./data_structures/)
+Built-in and custom data structure implementations.
+- **[Slices](./data_structures/Slices.md)**: Reference table for slice operations and the `slices` package.
+- **[Maps](./data_structures/Maps.md)**: Reference table for map operations and the `maps` package.
+- **[Strings](./data_structures/Strings.md)**: Reference table for `strings` and `strconv` packages.
+- **[Linked Lists](./data_structures/Linked_List.md)**: Custom implementations and `container/list`.
+- **[Stacks](./data_structures/Stacks.md)**: Slice-based and linked-list stack implementations.
+- **[Trees](./data_structures/Tree.md)**: Binary trees, BSTs, and traversal algorithms.
+
+### 3. [Algorithms](./algorithms/)
+Common algorithms implemented in Go.
+- **[Sorting](./algorithms/sorting/)**: Quick Sort, Merge Sort, and the `sort` package reference.
+- **[Searching](./algorithms/searching/)**: Binary search and other search techniques.
+- **[Recursion](./algorithms/recursion/)**: Factorials, Fibonacci, and recursive patterns.
+
+### 4. [Standard Library](./standard_library/)
+Detailed guides and technical tables for Go's standard packages.
+- **[Built-in Functions](./standard_library/builtins/BUILTINS.md)**: **Full technical table** of all Go built-ins (`append`, `make`, `len`, `clear`, etc.).
+- **[OS](./standard_library/OS.md)**: File system, environment variables, and process management.
+- **[IO](./standard_library/IO.md)**: Readers, writers, and stream manipulation.
+- **[Utilities](./standard_library/utilities/)**: Common helper functions, filters, and file operations.
+
+### 5. [Advanced Topics](./advanced/)
+Complex systems and concurrent programming.
+- **[Concurrency](./advanced/concurrency/)**: Goroutines, channels, and synchronization primitives.
+- **[Networking](./advanced/networking/)**: TCP/UDP, JSON fetching, and URL parsing.
+- **[Web](./advanced/web/)**: HTTP servers, templates, and REST API examples.
 
 ---
 
-## 🚀 Example: TreeSort
+## 🚀 Getting Started
 
-```go
-values := []int{5, 1, 9, 2, 6}
-TreeSort(values)
-fmt.Println("Sorted:", values)
+Each directory contains a `main.go` or specific example files. You can run them directly using the Go tool:
+
+```bash
+# Example: Run the built-in functions demo
+go run standard_library/builtins/main.go
 ```
-<img width="909" height="895" alt="image" src="https://github.com/user-attachments/assets/dc4fd440-9f6b-482a-ae82-0ff0397a60be" />
 
+## 🛠 Features
+- **Technical Tables**: Most documentation files include "Quick Reference" tables for functions, methods, and types.
+- **Idiomatic Code**: Examples follow Go best practices and utilize modern features (Go 1.21+ where applicable).
+- **Comprehensive Coverage**: From basic variables to advanced concurrency and networking.
 
-
+---
+*Happy Coding in Go!*

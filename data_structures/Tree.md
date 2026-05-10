@@ -1,6 +1,21 @@
 # Tree Data Structures in Go
 
-This guide provides an introduction to tree data structures and their implementation in Go. Trees are a fundamental non-linear data structure used to represent hierarchical data.
+This guide provides an introduction to tree data structures and their implementation in Go.
+
+## Quick Reference: Tree Operations & Traversal
+
+| Operation / Traversal | Algorithm / Principle | Description | Time Complexity |
+| :--- | :--- | :--- | :--- |
+| **Search (BST)** | Recursive/Iterative | Compare target with node value, move Left or Right. | O(log n) (balanced) |
+| **Insert (BST)** | Recursive/Iterative | Traverse to find empty leaf position. | O(log n) (balanced) |
+| **In-Order** | Left -> Root -> Right | Visits nodes in ascending order for BSTs. | O(n) |
+| **Pre-Order** | Root -> Left -> Right | Useful for copying or cloning a tree. | O(n) |
+| **Post-Order** | Left -> Right -> Root | Useful for deleting or freeing nodes. | O(n) |
+| **Level-Order** | Breadth-First | Visits nodes level by level using a queue. | O(n) |
+| **Min (BST)** | Go Left | Traverse to the leftmost node. | O(log n) (balanced) |
+| **Max (BST)** | Go Right | Traverse to the rightmost node. | O(log n) (balanced) |
+
+---
 
 ## 1. What is a Tree?
 

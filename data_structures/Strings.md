@@ -1,6 +1,26 @@
 # String Manipulation in Go
 
-This guide provides a comprehensive overview of working with strings in Go. Strings are a fundamental data type, and Go provides a rich set of tools for manipulating them, primarily through the `strings` and `strconv` packages.
+This guide provides a comprehensive overview of working with strings in Go.
+
+## Quick Reference: Strings & Conversion
+
+| Package | Function | Signature | Description |
+| :--- | :--- | :--- | :--- |
+| **strings** | `Contains` | `func Contains(s, substr string) bool` | Checks if `substr` is in `s`. |
+| **strings** | `HasPrefix` | `func HasPrefix(s, prefix string) bool` | Checks if `s` starts with `prefix`. |
+| **strings** | `HasSuffix` | `func HasSuffix(s, suffix string) bool` | Checks if `s` ends with `suffix`. |
+| **strings** | `Index` | `func Index(s, substr string) int` | Returns index of first `substr`. |
+| **strings** | `Join` | `func Join(elems []string, sep string) string` | Joins strings with a separator. |
+| **strings** | `Split` | `func Split(s, sep string) []string` | Splits string into a slice. |
+| **strings** | `ReplaceAll`| `func ReplaceAll(s, old, new string) string` | Replaces all instances of `old`. |
+| **strings** | `TrimSpace` | `func TrimSpace(s string) string` | Removes leading/trailing whitespace. |
+| **strings** | `ToUpper` | `func ToUpper(s string) string` | Converts to uppercase. |
+| **strconv** | `Atoi` | `func Atoi(s string) (int, error)` | String to Integer. |
+| **strconv** | `Itoa` | `func Itoa(i int) string` | Integer to String. |
+| **strconv** | `ParseBool` | `func ParseBool(s string) (bool, error)` | String to Boolean. |
+| **strconv** | `ParseFloat`| `func ParseFloat(s string, bit int) (float64, error)` | String to Float. |
+
+---
 
 ## 1. What is a String in Go?
 

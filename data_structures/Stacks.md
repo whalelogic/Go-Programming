@@ -1,6 +1,18 @@
 # Stacks in Go
 
-This guide explores the stack data structure in Go. A stack is a fundamental concept in computer science, and understanding how to implement and use one is essential for any developer.
+This guide explores the stack data structure in Go.
+
+## Quick Reference: Stack Operations (Slice-based)
+
+| Operation | Implementation (Generic) | Description | Time Complexity |
+| :--- | :--- | :--- | :--- |
+| **Push** | `s = append(s, v)` | Adds `v` to the top of the stack. | O(1) amortized |
+| **Pop** | `v, s = s[len(s)-1], s[:len(s)-1]` | Removes and returns the top element. | O(1) |
+| **Peek** | `v = s[len(s)-1]` | Returns top element without removal. | O(1) |
+| **IsEmpty** | `len(s) == 0` | Returns true if stack has no elements. | O(1) |
+| **Size** | `len(s)` | Returns number of elements in stack. | O(1) |
+
+---
 
 ## 1. What is a Stack?
 

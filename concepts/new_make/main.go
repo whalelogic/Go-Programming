@@ -6,8 +6,6 @@ import (
 
 
 func main() {
-	
-
 
 	// New and make are both used to allocate memory, but they serve different purposes.
 	var p *[]int = new([]int)       // allocates slice structure; *p == nil; rarely useful
