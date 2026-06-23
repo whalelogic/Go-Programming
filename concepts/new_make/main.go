@@ -19,6 +19,12 @@ func main() {
 
 	fmt.Printf("p: %v\n", p)
 
+	ip := new(int) // allocates memory for an int, *ip == 0
+	fmt.Println("ip: ", ip)
+	fmt.Println("*ip: ", *ip)
+	*ip = 342
+	fmt.Println("ip: ", *ip)
+
 
 
 }

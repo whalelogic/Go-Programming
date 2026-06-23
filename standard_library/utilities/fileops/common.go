@@ -7,7 +7,7 @@ import (
 )
 
 
-func ReadFile(filename) (string, error) {
+func ReadFile(filename string) (string, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		return "", fmt.Errorf("failed to open file: %w", err)

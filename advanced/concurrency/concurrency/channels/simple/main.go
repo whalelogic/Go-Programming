@@ -7,6 +7,8 @@ import (
 
 // chan<- string indicates channel is only for sending.
 
+var wg sync.WaitGroup
+
 func SendChanMsg(msg string, ch chan<- string) {
 	// SendChanMsg sends a message to a channel.
 

@@ -20,6 +20,7 @@ func main() {
 	ch1 := make(chan string)
 	ch2 := make(chan string)
 
+	go SpaceTwo(ch2)
 	go SpaceOne(ch1)
 	go SpaceTwo(ch2)
 

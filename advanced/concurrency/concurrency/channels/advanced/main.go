@@ -16,15 +16,14 @@ func Receiver(id int, ch <- chan int, wg *sync.WaitGroup) {
 
 
 func main() {
-	// Example 1: Buffered Channels
+	// Buffered Channel
 	fmt.Println("---")
 	ch := make(chan int, 2)
 
-	// Send two values without blocking.
 	ch <- 1
 	ch <- 2
 
-	// Receive the values.
+	// Receive values.
 	fmt.Println(<-ch)
 	fmt.Println(<-ch)
 
@@ -34,11 +33,11 @@ func main() {
 
 	go func() {
 		time.Sleep(1 * time.Second)
-		c1 <- "one"
+		c1 <- "one string channel"
 	}()
 	go func() {
 		time.Sleep(2 * time.Second)
-		c2 <- "two"
+		c2 <- "two string channels"
 	}()
 
 	for range 2 {
@@ -67,7 +66,7 @@ func main() {
 		}
 	}()
 
-	for j := 1; j <= 5; j++ {
+	for j := 1; j <= 50; j++ {
 		jobs <- j
 		fmt.Println("sent job", j)
 	}
