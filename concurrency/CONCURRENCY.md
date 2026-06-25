@@ -1,4 +1,3 @@
-
 # Concurrency in Go
 
 Go provides built-in support for concurrent programming, making it easy to write programs that can handle multiple tasks simultaneously. Concurrency in Go is based on two main concepts: **goroutines** and **channels**.

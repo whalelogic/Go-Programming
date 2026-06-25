@@ -60,5 +60,5 @@ func demoPanic() {
 	}()
 
 	fmt.Println("Triggering a panic...")
-	panic("Oops! Something went wrong.")
+	panic("wrOops!!!!!")
 }

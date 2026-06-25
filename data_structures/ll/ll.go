@@ -1,4 +1,4 @@
-// Package lists implements a Linked List data structure
+// Package ll implements a Linked List data structure
 package ll
 
 type Element[T any] struct {
