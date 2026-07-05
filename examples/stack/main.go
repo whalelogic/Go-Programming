@@ -6,7 +6,6 @@ import (
 )
 
 
-
 // Create a stack using the stack package and perform some operations on it.
 // s is the variable that holds this stack instance. 
 
@@ -19,8 +18,8 @@ func main() {
 	s.Push(1)
 	s.Push(2)
 	s.Push(3)
-	s.Push(13)
-	s.Push(36)
+	s.Push(4)
+	s.Push(5)
 	s.Print()
 	
 	output, b := s.Pop()
@@ -28,6 +27,4 @@ func main() {
 	s.Print()
 	fmt.Println("Popped value:", output)
 	fmt.Println("\nWas pop successful?", b)
-	o := s.Peek()
-	fmt.Println("\nPeek result:", o)
 }

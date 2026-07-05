@@ -14,7 +14,12 @@ func main() {
 		return x * 2
 	}
 
+	square := func(x float64) float64 {
+		return x * x
+	}
+
 	fmt.Printf("Double 4.5=%+v\n", double(4.5))
+	fmt.Printf("Squared 4.5=%+v\n", square(4.5))
 
 	// every index in n...🢙
 	for o := range n {
@@ -63,8 +68,6 @@ func main() {
 	s, b = slices.BinarySearch(combine, 103)
 	fmt.Printf("\nIs 103 in the slice? Where?\nFound: %v --> Position: %d\n", b, s)
 	fmt.Println("Now it works!")
-
-
 
 	}
 
