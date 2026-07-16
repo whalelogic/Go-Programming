@@ -1,6 +1,6 @@
-Name: test.txt
+# Test file for parsing
 
-
+[names]
 Keith
 Sarah
 Sophie

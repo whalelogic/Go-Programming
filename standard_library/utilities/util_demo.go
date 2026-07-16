@@ -1,33 +1,81 @@
 package main
 
 import (
-	"bytes"
+	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/whalelogic/Go-Programming/standard_library/utilities/fileops"
 )
 
+func check(err error) {
+	if err != nil {
+		fmt.Println("Error: ", err)
+		os.Exit(1)
+	}
+}
+
+
+func hasMDext(path string) (bool, error) {
+	ext := filepath.Ext(path)
+	if ext == ".md" {
+		fmt.Println("Definitely Markdown.")
+		return true, nil
+	} else {
+		fmt.Println("Not a markdown file.")
+		return false, nil
+	}
+}
+
+//
+// func isMarkdown(bs *bufio.Scanner) bool {
+// 	m := false
+// 	for bs.Scan() {
+// 		line := bs.Text()
+// 		if len(line) > 0 {
+// 			fb := line[0]
+// 			if fb == '#' {
+// 				m = true
+// 				fmt.Println("Contains markdown.")
+// 			}
+// 		}
+// 	}
+// 	return m
+// }
+
 
 func main() {
-	
-	f, err := os.Open("test.txt")
-	if err != nil {
-		fmt.Println("Error opening file:", err)
-	}
-	defer f.Close()
-	var b bytes.Buffer
-	b.ReadFrom(f)
-	b.WriteTo(os.Stdout)
-	b.WriteString("\nThis is a new line added to the buffer.\n")
-	bn := b.Available()
-	fmt.Println("Available bytes in buffer:", bn)
-	b.WriteByte('Z')
-	bn = b.Available()
-	fmt.Println("Available bytes in buffer after writing a byte:", bn)
-	
-	bytesToString := b.String()
-	fmt.Println("File content:", bytesToString)
 
-	_ = fileops.WriteFile("output.txt", bytesToString)
+	path := "./test.txt"
+	mdPath := "./Utility_Functions.md"
+	h, e := hasMDext(mdPath)
+	check(e)
+	fmt.Println("has .md extension? ", h)
+	a := fileops.IsMarkdown(mdPath)
+	fmt.Println("a: ", a)
+
+	h, e = hasMDext(path)
+	check(e)
+	fmt.Println("has .md extension? ", h)
+
+	// f is a string containing all of the files data 
+	f, err := fileops.ReadFile(path)
+	check(err)
+
+	// fstr is a *strings.Reader
+	// it has several helpful methods like ReadAt, ReadByte, len, peek, size.
+	fstr := strings.NewReader(f)
+	fmt.Println("Length: ", fstr.Len())
+	fmt.Println("Size: ", fstr.Size())
+
+	scanner := bufio.NewScanner(fstr)
+	for scanner.Scan() {
+		fmt.Println("lines: ", scanner.Text())
+	}
+
+
+
+
 }

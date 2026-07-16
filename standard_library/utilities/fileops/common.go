@@ -2,9 +2,10 @@
 package fileops
 
 import (
-	"io"
 	"fmt"
+	"io"
 	"os"
+	"path/filepath"
 )
 
 func CheckError(err error) {
@@ -12,6 +13,11 @@ func CheckError(err error) {
 		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
+}
+
+func IsMarkdown(path string) bool {
+	p := filepath.Ext(path)
+	return p == ".md"
 }
 
 
